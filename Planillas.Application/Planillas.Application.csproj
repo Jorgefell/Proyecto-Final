@@ -11,4 +11,12 @@
       <Folder Include="Features\Planillas\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="14.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Planillas.Domain\Planillas.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Planillas.Infrastructure;
+namespace Planillas.Domain.Entities;
 
 public partial class Detallesboletum
 {

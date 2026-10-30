@@ -20,6 +20,14 @@ public class TrabajadorRepository : ITrabajadorRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<Trabajadore?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Trabajadores
+            .Include(t => t.Cargo)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
     public async Task<List<Trabajadore>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Trabajadores

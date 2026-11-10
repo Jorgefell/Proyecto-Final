@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Planillas.Application.DTOs;
 using Planillas.Domain.Entities;
 using Planillas.Domain.Interfaces;
 
@@ -14,10 +15,10 @@ public record CreateTrabajadorCommand(
     decimal RemuneracionBase,
     int CargoId,
     int? ObraActualId
-) : IRequest<int>;
+) : IRequest<TrabajadorDto>;
 
 // HANDLER
-internal sealed class CreateTrabajadorCommandHandler : IRequestHandler<CreateTrabajadorCommand, int>
+internal sealed class CreateTrabajadorCommandHandler : IRequestHandler<CreateTrabajadorCommand, TrabajadorDto>
 {
     private readonly ITrabajadorRepository _repository;
 
@@ -26,7 +27,7 @@ internal sealed class CreateTrabajadorCommandHandler : IRequestHandler<CreateTra
         _repository = repository;
     }
 
-    public async Task<int> Handle(CreateTrabajadorCommand request, CancellationToken cancellationToken)
+    public async Task<TrabajadorDto> Handle(CreateTrabajadorCommand request, CancellationToken cancellationToken)
     {
         var trabajador = new Trabajadore
         {
@@ -43,6 +44,21 @@ internal sealed class CreateTrabajadorCommandHandler : IRequestHandler<CreateTra
         };
 
         await _repository.AddAsync(trabajador, cancellationToken);
-        return trabajador.Id;
+        return new TrabajadorDto(
+            trabajador.Id,
+            trabajador.TipoDocumento,
+            trabajador.NumeroDocumento,
+            trabajador.Nombres,
+            trabajador.Apellidos,
+            trabajador.Telefono,
+            trabajador.CargoId,
+            trabajador.ObraActualId,
+            trabajador.FechaIngreso,
+            trabajador.FechaCese,
+            trabajador.TipoContrato,
+            trabajador.ModalidadPago,
+            trabajador.RemuneracionBase,
+            trabajador.EstadoLaboral
+        );
     }
 }

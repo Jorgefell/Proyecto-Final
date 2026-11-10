@@ -5,34 +5,38 @@ using Planillas.Infrastructure.Persistence;
 
 namespace Planillas.Infrastructure.Repositories;
 
-public class TrabajadorRepository : ITrabajadorRepository
+public class TrabajadorRepository(ApplicationDbContext context) : ITrabajadorRepository
 {
-    private readonly ApplicationDbContext _context;
-
-    public TrabajadorRepository(ApplicationDbContext context)
+    public async Task<IEnumerable<Trabajadore>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        _context = context;
-    }
-
-    public async Task AddAsync(Trabajadore trabajador, CancellationToken cancellationToken = default)
-    {
-        await _context.Trabajadores.AddAsync(trabajador, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        return await context.Trabajadores.AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<Trabajadore?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await _context.Trabajadores
-            .Include(t => t.Cargo)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+        return await context.Trabajadores.FindAsync([id], cancellationToken);
     }
 
-    public async Task<List<Trabajadore>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<Trabajadore> AddAsync(Trabajadore trabajador, CancellationToken cancellationToken = default)
     {
-        return await _context.Trabajadores
-            .Include(t => t.Cargo)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
+        await context.Trabajadores.AddAsync(trabajador, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
+        return trabajador;
+    }
+
+    public async Task UpdateAsync(Trabajadore trabajador, CancellationToken cancellationToken = default)
+    {
+        context.Trabajadores.Update(trabajador);
+        await context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var trabajador = await context.Trabajadores.FindAsync([id], cancellationToken);
+        if (trabajador is not null)
+        {
+            context.Trabajadores.Remove(trabajador);
+            await context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

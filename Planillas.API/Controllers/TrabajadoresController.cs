@@ -7,29 +7,41 @@ namespace Planillas.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TrabajadoresController : ControllerBase
+public class TrabajadoresController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public TrabajadoresController(IMediator mediator)
+    [HttpGet]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _mediator = mediator;
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateTrabajadorCommand command)
-    {
-        var id = await _mediator.Send(command);
-        return Ok(new { id, message = "Trabajador registrado exitosamente" });
+        var result = await mediator.Send(new GetAllTrabajadoresQuery(), cancellationToken);
+        return Ok(result);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var trabajador = await _mediator.Send(new GetTrabajadorByIdQuery(id));
-        if (trabajador is null)
-            return NotFound(new { message = $"No se encontro el trabajador con Id {id}" });
+        var result = await mediator.Send(new GetTrabajadorByIdQuery(id), cancellationToken);
+        return result is null ? NotFound() : Ok(result);
+    }
 
-        return Ok(trabajador);
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateTrabajadorCommand command, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateTrabajadorCommand command, CancellationToken cancellationToken)
+    {
+        if (id != command.Id) return BadRequest();
+        var updated = await mediator.Send(command, cancellationToken);
+        return updated ? NoContent() : NotFound();
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    {
+        var deleted = await mediator.Send(new DeleteTrabajadorCommand(id), cancellationToken);
+        return deleted ? NoContent() : NotFound();
     }
 }

@@ -11,6 +11,8 @@ builder.Services.AddMediatR(configuration =>
     configuration.RegisterServicesFromAssembly(typeof(CreateTrabajadorCommand).Assembly));
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<ITrabajadorRepository, TrabajadorRepository>();
+builder.Services.AddScoped<ICargoRepository, CargoRepository>();
+builder.Services.AddScoped<IObraRepository, ObraRepository>();
 
 var app = builder.Build();
 

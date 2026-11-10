@@ -23,20 +23,21 @@ internal sealed class GetTrabajadorByIdQueryHandler : IRequestHandler<GetTrabaja
         if (trabajador is null)
             return null;
 
-        return new TrabajadorDto
-        {
-            Id = trabajador.Id,
-            NumeroDocumento = trabajador.NumeroDocumento,
-            Nombres = trabajador.Nombres,
-            Apellidos = trabajador.Apellidos,
-            TipoContrato = trabajador.TipoContrato,
-            ModalidadPago = trabajador.ModalidadPago,
-            RemuneracionBase = trabajador.RemuneracionBase,
-            CargoId = trabajador.CargoId,
-            CargoNombre = trabajador.Cargo?.Nombre,
-            ObraActualId = trabajador.ObraActualId,
-            FechaIngreso = trabajador.FechaIngreso,
-            EstadoLaboral = trabajador.EstadoLaboral
-        };
+        return new TrabajadorDto(
+            trabajador.Id,
+            trabajador.TipoDocumento,
+            trabajador.NumeroDocumento,
+            trabajador.Nombres,
+            trabajador.Apellidos,
+            trabajador.Telefono,
+            trabajador.CargoId,
+            trabajador.ObraActualId,
+            trabajador.FechaIngreso,
+            trabajador.FechaCese,
+            trabajador.TipoContrato,
+            trabajador.ModalidadPago,
+            trabajador.RemuneracionBase,
+            trabajador.EstadoLaboral
+        );
     }
 }

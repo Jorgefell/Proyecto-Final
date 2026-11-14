@@ -1,20 +1,18 @@
-using MediatR;
-using Planillas.Application.Features.Trabajadores.Commands;
-using Planillas.Domain.Interfaces;
-using Planillas.Infrastructure.Persistence;
-using Planillas.Infrastructure.Repositories;
+using Planillas.API.Extensions;
+using Planillas.Application.Extensions;
+using Planillas.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddMediatR(configuration =>
-    configuration.RegisterServicesFromAssembly(typeof(CreateTrabajadorCommand).Assembly));
-builder.Services.AddDbContext<ApplicationDbContext>();
-builder.Services.AddScoped<ITrabajadorRepository, TrabajadorRepository>();
-builder.Services.AddScoped<ICargoRepository, CargoRepository>();
-builder.Services.AddScoped<IObraRepository, ObraRepository>();
+// Servicios de cada capa, registrados mediante métodos de extensión.
+builder.Services.AddApiServices();
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+// Configuración del pipeline HTTP.
+app.UseApiServices();
 
 app.MapControllers();
 

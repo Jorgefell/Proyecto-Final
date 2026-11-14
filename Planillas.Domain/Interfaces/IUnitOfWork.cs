@@ -16,5 +16,11 @@ public interface IUnitOfWork : IAsyncDisposable
 
     IPrestamosadelantoRepository Prestamosadelantos { get; }
 
+    IPlanillaRepository Planillas { get; }
+
+    IBoletaspagoRepository Boletaspagos { get; }
+
+    IDetallesboletumRepository Detallesboleta { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

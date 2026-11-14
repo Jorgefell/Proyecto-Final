@@ -19,6 +19,12 @@ public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
 
     public IPrestamosadelantoRepository Prestamosadelantos { get; } = new PrestamosadelantoRepository(context);
 
+    public IPlanillaRepository Planillas { get; } = new PlanillaRepository(context);
+
+    public IBoletaspagoRepository Boletaspagos { get; } = new BoletaspagoRepository(context);
+
+    public IDetallesboletumRepository Detallesboleta { get; } = new DetallesboletumRepository(context);
+
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return await context.SaveChangesAsync(cancellationToken);

@@ -22,5 +22,9 @@ public interface IUnitOfWork : IAsyncDisposable
 
     IDetallesboletumRepository Detallesboleta { get; }
 
+    IUsuarioRepository Usuarios { get; }
+
+    IRoleRepository Roles { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

@@ -30,6 +30,8 @@ public static class DependencyInjection
         services.AddScoped<IPlanillaRepository, PlanillaRepository>();
         services.AddScoped<IBoletaspagoRepository, BoletaspagoRepository>();
         services.AddScoped<IDetallesboletumRepository, DetallesboletumRepository>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
 
         return services;
     }

@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Planillas.Application.Interfaces;
 using Planillas.Domain.Interfaces;
 using Planillas.Infrastructure.Persistence;
 using Planillas.Infrastructure.Repositories;
+using Planillas.Infrastructure.Services;
 
 namespace Planillas.Infrastructure.Extensions;
 
@@ -32,6 +34,7 @@ public static class DependencyInjection
         services.AddScoped<IDetallesboletumRepository, DetallesboletumRepository>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IJwtService, JwtService>();
 
         return services;
     }

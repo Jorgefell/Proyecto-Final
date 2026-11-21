@@ -1,10 +1,12 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Planillas.Application.Features.Trabajadores.Commands;
 using Planillas.Application.Features.Trabajadores.Queries;
 
 namespace Planillas.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class TrabajadoresController(IMediator mediator) : ControllerBase

@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Planillas.Application.Features.Cargos.Commands;
 using Planillas.Application.Features.Cargos.Queries;
 
 namespace Planillas.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CargosController(IMediator mediator) : ControllerBase

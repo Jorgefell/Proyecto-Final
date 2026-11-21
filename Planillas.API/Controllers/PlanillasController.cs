@@ -1,10 +1,12 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Planillas.Application.Features.Planillas.Commands;
 using Planillas.Application.Features.Planillas.Queries;
 
 namespace Planillas.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class PlanillasController(IMediator mediator) : ControllerBase

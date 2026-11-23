@@ -11,6 +11,10 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+// Manejo global de excepciones y CORS antes de la autenticación.
+app.UseMiddleware<Planillas.API.Middleware.ExceptionMiddleware>();
+app.UseCors("AllowFrontend");
+
 // Configuración del pipeline HTTP.
 app.UseApiServices();
 

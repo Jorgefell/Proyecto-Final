@@ -15,6 +15,16 @@ public static class ApiServiceExtensions
     {
         services.AddControllers();
 
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontend", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            });
+        });
+
         var jwtKey = configuration["Jwt:Key"];
         var jwtIssuer = configuration["Jwt:Issuer"];
         var jwtAudience = configuration["Jwt:Audience"];
@@ -48,13 +58,34 @@ public static class ApiServiceExtensions
 
         services.AddEndpointsApiExplorer();
 
-        services.AddSwaggerGen(options =>
+        services.AddSwaggerGen(c =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo
+            c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Planillas API",
+                Title = "Planillas Constructora API",
                 Version = "v1",
                 Description = "API de gestión de planillas de construcción."
+            });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Ingresa tu token JWT aquí."
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                    },
+                    Array.Empty<string>()
+                }
             });
         });
 

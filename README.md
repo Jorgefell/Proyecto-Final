@@ -18,4 +18,4 @@ API RESTful y cliente web ligero desarrollado en **.NET 10** bajo **Clean Archit
 ## Ejecución Rápida
 1. Configurar la cadena de conexión `DefaultConnection` en `Planillas.API/appsettings.json`.
 2. Ejecutar `dotnet run --project Planillas.API`.
-3. Acceder a `http://localhost:5000/swagger` e iniciar sesión con las credenciales iniciales (`admin` / `Admin123!`).
+3. Acceder a `http://localhost:5000/swagger` e iniciar sesión con las credenciales iniciales (`jorge_admin` / `Admin123!`).

@@ -2,10 +2,7 @@
 using Planillas.Application.DTOs;
 using Planillas.Domain.Entities;
 using Planillas.Domain.Interfaces;
-
 namespace Planillas.Application.Features.Trabajadores.Commands;
-
-// COMMAND
 public record CreateTrabajadorCommand(
     string NumeroDocumento,
     string Nombres,
@@ -16,17 +13,13 @@ public record CreateTrabajadorCommand(
     int CargoId,
     int? ObraActualId
 ) : IRequest<TrabajadorDto>;
-
-// HANDLER
 internal sealed class CreateTrabajadorCommandHandler : IRequestHandler<CreateTrabajadorCommand, TrabajadorDto>
 {
     private readonly ITrabajadorRepository _repository;
-
     public CreateTrabajadorCommandHandler(ITrabajadorRepository repository)
     {
         _repository = repository;
     }
-
     public async Task<TrabajadorDto> Handle(CreateTrabajadorCommand request, CancellationToken cancellationToken)
     {
         var trabajador = new Trabajadore
@@ -42,7 +35,6 @@ internal sealed class CreateTrabajadorCommandHandler : IRequestHandler<CreateTra
             FechaIngreso = DateTime.Today,
             EstadoLaboral = "Activo"
         };
-
         await _repository.AddAsync(trabajador, cancellationToken);
         return new TrabajadorDto(
             trabajador.Id,

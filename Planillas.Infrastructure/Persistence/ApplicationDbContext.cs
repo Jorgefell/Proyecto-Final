@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Planillas.Domain.Entities;
-
 namespace Planillas.Infrastructure.Persistence;
 
 public partial class ApplicationDbContext : DbContext
@@ -10,30 +9,19 @@ public partial class ApplicationDbContext : DbContext
     public ApplicationDbContext()
     {
     }
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
-
     public virtual DbSet<Asistencia> Asistencias { get; set; }
-
     public virtual DbSet<Boletaspago> Boletaspagos { get; set; }
-
     public virtual DbSet<Cargo> Cargos { get; set; }
-
     public virtual DbSet<Detallesboletum> Detallesboleta { get; set; }
-
     public virtual DbSet<Obra> Obras { get; set; }
-
     public virtual DbSet<Planilla> Planillas { get; set; }
-
     public virtual DbSet<Prestamosadelanto> Prestamosadelantos { get; set; }
-
     public virtual DbSet<Role> Roles { get; set; }
-
     public virtual DbSet<Trabajadore> Trabajadores { get; set; }
-
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -43,7 +31,6 @@ public partial class ApplicationDbContext : DbContext
             optionsBuilder.UseMySQL("Server=localhost;Database=PlanillasConstructoraDb;Uid=root;Pwd=JorgeSN_2025!;");
         }
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Asistencia>(entity =>

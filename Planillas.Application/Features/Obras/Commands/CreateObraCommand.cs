@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Planillas.Application.DTOs;
 using Planillas.Domain.Entities;
+using Planillas.Domain.Enums;
 using Planillas.Domain.Interfaces;
 
 namespace Planillas.Application.Features.Obras.Commands;
@@ -25,7 +26,7 @@ public class CreateObraCommandHandler(IObraRepository repository)
             Ubicacion = request.Ubicacion,
             FechaInicio = request.FechaInicio,
             FechaFinEstimada = request.FechaFinEstimada,
-            Estado = request.Estado ?? "Planificacion",
+            Estado = ObraEstado.Normalizar(request.Estado) ?? ObraEstado.Planificacion,
             PresupuestoManoObra = request.PresupuestoManoObra
         };
 

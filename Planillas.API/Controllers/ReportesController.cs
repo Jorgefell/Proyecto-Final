@@ -17,7 +17,7 @@ public class ReportesController : ControllerBase
     }
 
     [HttpGet("costos-por-obra")]
-    [Authorize(Roles = "Admin,Contador")]
+    [Authorize(Roles = "Admin,Administrador,Contador")]
     public async Task<IActionResult> GetCostosPorObra([FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin)
     {
         var reporte = await _reporteService.GetCostosPorObraAsync(fechaInicio, fechaFin);
@@ -25,7 +25,7 @@ public class ReportesController : ControllerBase
     }
 
     [HttpGet("resumen-planilla/{planillaId:int}")]
-    [Authorize(Roles = "Admin,Contador,RRHH")]
+    [Authorize(Roles = "Admin,Administrador,Contador,RRHH")]
     public async Task<IActionResult> GetResumenPlanilla(int planillaId)
     {
         var resumen = await _reporteService.GetResumenPlanillaAsync(planillaId);

@@ -7,19 +7,21 @@ public static class DbInitializer
 {
     public static async Task SeedAsync(ApplicationDbContext context)
     {
-        if (!await context.Roles.AnyAsync())
+        var nombresRoles = new[] { "Admin", "Contador", "RRHH" };
+        foreach (var nombre in nombresRoles)
         {
-            context.Roles.AddRange(
-                new Role { Nombre = "Admin" },
-                new Role { Nombre = "Contador" },
-                new Role { Nombre = "RRHH" }
-            );
-            await context.SaveChangesAsync();
+            if (!await context.Roles.AnyAsync(r => r.Nombre == nombre))
+            {
+                context.Roles.Add(new Role { Nombre = nombre });
+            }
         }
+        await context.SaveChangesAsync();
 
-        if (!await context.Usuarios.AnyAsync())
+        var adminRol = await context.Roles.FirstAsync(r => r.Nombre == "Admin");
+        var adminUser = await context.Usuarios.FirstOrDefaultAsync(u => u.Username == "admin");
+
+        if (adminUser == null)
         {
-            var adminRol = await context.Roles.FirstAsync(r => r.Nombre == "Admin");
             context.Usuarios.Add(new Usuario
             {
                 Username = "admin",
@@ -29,7 +31,15 @@ public static class DbInitializer
                 Activo = true,
                 FechaCreacion = DateTime.UtcNow
             });
-            await context.SaveChangesAsync();
         }
+        else
+        {
+            // Asegura que el hash sea válido para BCrypt si venía en texto plano
+            adminUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!");
+            adminUser.RolId = adminRol.Id;
+            adminUser.Activo = true;
+        }
+
+        await context.SaveChangesAsync();
     }
 }

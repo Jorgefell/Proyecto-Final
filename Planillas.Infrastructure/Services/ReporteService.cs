@@ -2,31 +2,24 @@
 using Planillas.Application.DTOs;
 using Planillas.Application.Interfaces;
 using Planillas.Infrastructure.Persistence;
-
 namespace Planillas.Infrastructure.Services;
-
 public class ReporteService : IReporteService
 {
     private readonly ApplicationDbContext _context;
-
     public ReporteService(ApplicationDbContext context)
     {
         _context = context;
     }
-
     public async Task<IEnumerable<CostoPorObraDto>> GetCostosPorObraAsync(DateTime? fechaInicio, DateTime? fechaFin)
     {
         var query = _context.Planillas
             .Include(p => p.Obra)
             .Include(p => p.Boletaspagos)
             .AsQueryable();
-
         if (fechaInicio.HasValue)
             query = query.Where(p => p.FechaInicio >= fechaInicio.Value);
-
         if (fechaFin.HasValue)
             query = query.Where(p => p.FechaFin <= fechaFin.Value);
-
         var planillas = await query.ToListAsync();
 
         return planillas
@@ -40,16 +33,13 @@ public class ReporteService : IReporteService
             ))
             .ToList();
     }
-
     public async Task<ResumenPlanillaDto?> GetResumenPlanillaAsync(int planillaId)
     {
         var planilla = await _context.Planillas
             .Include(p => p.Obra)
             .Include(p => p.Boletaspagos)
             .FirstOrDefaultAsync(p => p.Id == planillaId);
-
         if (planilla == null) return null;
-
         return new ResumenPlanillaDto(
             planilla.Id,
             planilla.Codigo,
@@ -63,7 +53,6 @@ public class ReporteService : IReporteService
             planilla.Boletaspagos.Sum(b => b.NetoPagar)
         );
     }
-
     public async Task<BoletaIndividualDto?> GetBoletaIndividualAsync(int boletaId)
     {
         var boleta = await _context.Boletaspagos
@@ -71,14 +60,11 @@ public class ReporteService : IReporteService
                 .ThenInclude(t => t.Cargo)
             .Include(b => b.Detallesboleta)
             .FirstOrDefaultAsync(b => b.Id == boletaId);
-
         if (boleta == null) return null;
-
         var trabajador = boleta.Trabajador;
         var detalles = boleta.Detallesboleta
             .Select(d => new DetalleConceptoDto(d.Concepto, d.Tipo, d.Monto))
             .ToList();
-
         return new BoletaIndividualDto(
             boleta.Id,
             boleta.PlanillaId,

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Planillas.Domain.Entities;
 
 public partial class Planilla

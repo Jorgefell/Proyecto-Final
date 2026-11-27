@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Planillas.Domain.Enums;
 using Planillas.Domain.Interfaces;
 
 namespace Planillas.Application.Features.Obras.Commands;
@@ -25,7 +26,7 @@ public class UpdateObraCommandHandler(IObraRepository repository)
         obra.Ubicacion = request.Ubicacion;
         obra.FechaInicio = request.FechaInicio;
         obra.FechaFinEstimada = request.FechaFinEstimada;
-        obra.Estado = request.Estado;
+        obra.Estado = ObraEstado.Normalizar(request.Estado);
         obra.PresupuestoManoObra = request.PresupuestoManoObra;
 
         await repository.UpdateAsync(obra, cancellationToken);
